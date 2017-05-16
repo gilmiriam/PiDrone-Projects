@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+        <style>
+            #title {
+                text-align: center;
+            }
+        </style>
+</head>
+
+<body class="login">
+    <div>
+        <a class="hiddenanchor" id="signup"></a>
+        <a class="hiddenanchor" id="signin"></a>
+
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <h1 id="title">PiDrone Projects</h1>
+                <section class="login_content">
+                    <form action="/login" method="post">
+                        <h1>Login Form</h1>
+                        <div>
+                            <input type="text" name="username" class="form-control" placeholder="Username" required="" />
+                        </div>
+                        <div>
+                            <input type="password" name="password" class="form-control" placeholder="Password" required="" />
+                        </div>
+                        <div>
+                            <button class="btn btn-default submit" type="submit">Log in</button>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <p class="change_link">New to site?
+                                <a href="/signup" class="to_register"> Create Account </a>
+                            </p>
+                            <div class="clearfix"></div>
+                            <br />
+
+                            <div>
+                                <h1>PiDrone Projects</h1>
+                                <p>©2016 All Rights Reserved. PiDrone Projects. Privacy and Terms</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
