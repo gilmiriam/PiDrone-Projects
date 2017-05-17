@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 //var server = require('http').Server(app);
-var io = require('socket.io')(server);
 var ruta = require('../routes/routes.main');
 var PythonShell = require('python-shell');
 var http = require('http');
@@ -24,7 +23,7 @@ app.set('port', process.env.PORT || 4000);
 var server = http.createServer(app).listen(app.get('port'), function () {
     console.log("server listening on port " + app.get('port'));
 });
-
+var io = require('socket.io')(server);
 app.set("view engine", "ejs");
 
 mongoose.connect(dbConfig.url);
