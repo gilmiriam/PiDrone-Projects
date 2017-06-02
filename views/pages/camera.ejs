@@ -5,6 +5,62 @@
     <% include ../partials/header %>
         <script src="/socket.io/socket.io.js" charset="utf-8"></script>
         <script src="/js/chat/main.js" charset="utf-8"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            #map {
+                height: 400px;
+                width: 100%;
+            }
+            
+            #foto,
+            #video {
+                width: 15%;
+                text-align: center;
+                font-size: 20px;
+            }
+            
+            #mensaje {
+                width: 20%;
+                text-align: center;
+                margin-top: 0.5%;
+            }
+            
+            #stream {
+                height: 99%;
+                margin: 0px auto;
+                display: block;
+                margin-top: 20px;
+            }
+        </style>
+        <!-- <script>
+            var socket = io();
+            socket.on('liveStream', function (url) {
+                $('#stream').attr('src', 'stream/'+url);
+                $('.start').hide();
+            });
+
+            function startStream() {
+                socket.emit('start-stream');
+                $('.start').hide();
+            }
+        </script>-->
+
+        <script>
+            function datos() {
+                var socket = io();
+                socket.emit("get_data");
+                socket.on("let_data", function (data) {
+                    document.getElementById("temp").innerHTML = "Temperatura: " + data.temperature + "Cº";
+                    document.getElementById("humi").innerHTML = "Humedad: " + data.humidity + "%";
+                    document.getElementById("pres").innerHTML = "Presion: " + data.pressure + "hPa";
+                });
+            }
+            datos();
+            setInterval('datos()', 10000);
+        </script>
+
 </head>
 
 <body>
@@ -13,45 +69,70 @@
         <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
             <% include ../partials/sidebar %>
         </div>
-
         <div class="main-panel">
-            <nav class="navbar navbar-default navbar-fixed">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Foto</a>
-                    </div>
-                    <% include ../partials/navbar %>
-
-                </div>
-            </nav>
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="sidebar-wrapper">
-                                <ul class="nav">
-                                    <li class="active-pro">
-                                        <a href="" onclick="return camera(this)">
-                                            <p>Hacer foto</p>
-                                        </a>
-                                    </li>
-                                </ul>
+            <div class="navbar-header">
+                <span class="navbar-brand">Foto</span>
+            </div>
+            <% include ../partials/navbar %>
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="sidebar-wrapper">
+                                    <ul class="nav">
+                                        <li class="active-pro">
+                                            <a id="foto" href="" onclick="return camera(this)" class="btn btn-info" role="button">
+                                                Hacer foto
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+                        <div id="mensaje"></div>
+                        <div class="row">
+                            <p class="col-sm-4" id="temp"></p>
+                            <p class="col-sm-4" id="humi"></p>
+                            <p class="col-sm-4" id="pres"></p>
+                        </div>
+                        <!--<button type="button" id="" class="btn btn-info start" onclick="startStream()">Start Camera</button>-->
+
+                        <div class="row">
+                            <!--<img src="" id="stream">-->
+                        </div>
+                        <h3>Localizate!</h3>
+                        <div id="map"></div>
+                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpnej4DfxG01a2eW0nSwiyZ0fs1wqlPVo"></script>
+                        <script>
+                            function map() {
+                                socket.emit('get_gps');
+                                socket.on('gps', function (data) {
+                                    var mapOptions = {
+                                        center: new google.maps.LatLng(data.lat, data.lng),
+                                        zoom: 10,
+                                        mapTypeId: google.maps.MapTypeId.HYBRID
+                                    }
+
+                                    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+                                    var marker = new google.maps.Marker({
+                                        position: new google.maps.LatLng(data.lat, data.lng),
+                                        map: map
+                                    });
+
+                                });
+                            }
+                            map();
+                            setInterval('map()', 20000);
+                        </script>
                     </div>
                 </div>
-
-            </div>
+                <footer class="footer">
+                    <% include ../partials/footer %>
+                </footer>
         </div>
     </div>
-
-    <footer class="footer">
-        <% include ../partials/footer %>
-    </footer>
-
-
 </body>
-
 <% include ../partials/footer_script %>
 
 </html>

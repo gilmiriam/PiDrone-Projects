@@ -5,6 +5,39 @@
     <% include ../partials/header %>
         <script src="/socket.io/socket.io.js" charset="utf-8"></script>
         <script src="/js/chat/main.js" charset="utf-8"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            #map {
+                height: 400px;
+                width: 100%;
+            }
+            
+            #video {
+                width: 20%;
+                text-align: center;
+                font-size: 20px;
+            }
+            
+            #mensaje {
+                width: 20%;
+                text-align: center;
+                margin-top: 0.5%;
+            }
+        </style>
+        <script>
+            function datos() {
+                var socket = io();
+                socket.emit("get_data");
+                socket.on("let_data", function (data) {
+                    document.getElementById("temp").innerHTML = "Temperatura: " + data.temperature + "Cº";
+                    document.getElementById("humi").innerHTML = "Humedad: " + data.humidity + "%";
+                    document.getElementById("pres").innerHTML = "Presion: " + data.pressure + "hPa";
+                });
+            }
+            setInterval('datos()', 5000);
+        </script>
 </head>
 
 <body>
@@ -15,41 +48,65 @@
         </div>
 
         <div class="main-panel">
-            <nav class="navbar navbar-default navbar-fixed">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Video Recording</a>
-                    </div>
-                    <% include ../partials/navbar %>
-
-                </div>
-            </nav>
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="sidebar-wrapper">
-                                <ul class="nav">
-                                    <li class="active-pro">
-                                        <a href="" onclick="return video(this)">
-                                            <p>Hacer video</p>
-                                        </a>
-                                    </li>
-                                </ul>
+            <div class="navbar-header">
+                <span class="navbar-brand">Video</span>
+            </div>
+            <% include ../partials/navbar %>
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="sidebar-wrapper">
+                                    <ul class="nav">
+                                        <li class="active-pro">
+                                            <a id="video" href="" onclick="return video(this)" class="btn btn-info" role="button">Hacer video</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div id="mensaje"></div>
+                    <div class="row">
+                        <p class="col-sm-4" id="temp"></p>
+                        <p class="col-sm-4" id="humi"></p>
+                        <p class="col-sm-4" id="pres"></p>
+                    </div>
+                    <h3>Localizate!</h3>
+                    <div id="map"></div>
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpnej4DfxG01a2eW0nSwiyZ0fs1wqlPVo"></script>
+                    <script>
+                        function map() {
+                            socket.emit('get_gps');
+                            socket.on('gps', function (data) {
+                                var mapOptions = {
+                                    center: new google.maps.LatLng(data.lat, data.lng),
+                                    zoom: 10,
+                                    mapTypeId: google.maps.MapTypeId.HYBRID
+                                }
 
-            </div>
+                                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+                                var marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(data.lat, data.lng),
+                                    map: map
+                                });
+
+                            });
+                        }
+                        map();
+                        setInterval('map()', 20000);
+                    </script>
+                </div>
+                <footer class="footer">
+                    <% include ../partials/footer %>
+                </footer>
         </div>
     </div>
 
-    <footer class="footer">
-        <% include ../partials/footer %>
-    </footer>
 
 
 </body>
+<% include ../partials/footer_script %>
 
 </html>

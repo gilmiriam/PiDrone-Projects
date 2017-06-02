@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <% include ../partials/header %>
+        <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+        <script src="/js/chat/main.js" charset="utf-8"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+            <% include ../partials/sidebar %>
+        </div>
+        <div class="main-panel">
+            <div class="navbar-header">
+                <span class="navbar-brand">Dashboard</span>
+            </div>
+            <% include ../partials/navbar %>
+                <div class="content">
+                    <div class="container-fluid">
+                        <h3 id="titulo"></h3>
+                        <div class="container">
+
+                            <!--<video width="560" controls>
+                                    <source src="video/myvid.mp4" type="video/mp4" class="video-thumb js-trigger-modal">
+                                </video>-->
+                            <div class="image-grid">
+                                <% for(var i=0; i<user.path.length; i++) {%>
+                                    <figure class="image-grid__figure">
+                                        <img class="image-grid__img" src="<%= user.path[i]%>" alt="">
+                                        <figcaption class="image-grid__caption">
+                                            <p>Latitude: </p>
+                                            <p>Longuitud: </p>
+                                            <p>Temperatura:
+                                                <%= user.temperature[i]%> Cº</p>
+                                            <p>Presion:
+                                                <%= user.presion[i]%> hPa
+                                            </p>
+                                            <p>Humedad:
+                                                <%= user.humidity[i]%> %
+                                            </p>
+                                        </figcaption>
+                                    </figure>
+                                    <% } %>
+                            </div>
+                            <div class="modal-overlay closed" id="modal-overlay">
+                                <i class="material-icons modal-overlay__close">X</i>
+                            </div>
+                            <div class="modal closed" id="modal">
+                                <img class="modal__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/placeimg10.jpg" alt="Modal image">
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="footer">
+                        <% include ../partials/footer %>
+                    </footer>
+                </div>
+        </div>
+    </div>
+</body>
+<% include ../partials/footer_script %>
+
+</html>

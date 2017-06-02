@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <% include ../partials/header %>
+        <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+        <script src="/js/chat/main.js" charset="utf-8"></script>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+            <% include ../partials/sidebar %>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-default navbar-fixed">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Take Notes!!</a>
+                    </div>
+                    <% include ../partials/navbar %>
+
+                </div>
+            </nav>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <% for(var i=0; i<user.notas.titulo.length; i++) {%>
+                            <div class="col-md-4">
+                                <div class="card card-user">
+                                    <div class="image">
+                                    </div>
+                                    <div class="content">
+                                        <div class="author">
+                                            <a href="#">
+                                                <h4 class="title"><%= user.notas.titulo[i]%><br /></h4>
+                                            </a>
+                                        </div>
+                                        <p class="description text-center">
+                                            <%= user.notas.content[i]%>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
+                    <form onsubmit="return nota(this)">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Titulo</label>
+                                    <input type="text" id="titulo" class="form-control" placeholder="Aqui tu titulo">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Toma nota!!</label>
+                                    <textarea rows="5" id="notes" class="form-control" placeholder="Aqui puedes escribir lo que quieras"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info btn-fill pull-right">Agregar nota</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <% include ../partials/footer %>
+            </footer>
+        </div>
+    </div>
+</body>
+<% include ../partials/footer_script %>
+
+</html>
