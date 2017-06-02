@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var server = require('http').Server(express());
 var io = require('socket.io')(server);
+var user = require('../models/user');
+var multer = require('multer');
 
 var isAuthenticated = function (req, res, next) {
     // if user is authenticated in the session, call the next() to call the next request handler 
@@ -39,7 +41,7 @@ module.exports = function (passport) {
 
     /* Handle Registration POST */
     router.post('/signup', passport.authenticate('signup', {
-        successRedirect: '/home',
+        successRedirect: '/signup',
         failureRedirect: '/signup',
         failureFlash: true
     }));
@@ -50,7 +52,6 @@ module.exports = function (passport) {
             user: req.user
         });
     });
-
     /* Handle Logout */
     router.get('/signout', function (req, res) {
         req.logout();
@@ -63,12 +64,23 @@ module.exports = function (passport) {
     router.get("/video", function (req, res) {
         res.render("pages/video");
     });
+    router.get("/notes", function (req, res) {
+        res.render("pages/notas", {
+            user: req.user
+        });
+    });
     router.get("/user", function (req, res) {
-        res.render("pages/user");
+        res.render("pages/user", {
+            user: req.user
+        });
     });
-    router.get("/proba", function (req, res) {
-        res.render("pages/principal");
-    });
+
+    /*router.post("/user", multer({
+        dest: '../public/images'
+    }).single('upl'), function (req, res) {
+        console.log(req.forms);
+        res.status(204).end();
+    });*/
 
     return router;
 }
