@@ -1,8 +1,8 @@
 from sense_hat import SenseHat
-
 sense = SenseHat()
-pressure = sense.get_pressure()
-print("Pressure: %s Millibars" % pressure)
 
-# alternatives
-print(sense.pressure)
+p = sense.get_pressure()
+
+p = round(p, 1)
+
+print(p)

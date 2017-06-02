@@ -1,9 +1,8 @@
 from sense_hat import SenseHat
-
 sense = SenseHat()
-temp = sense.get_temperature()
-print("Temperature: %s C" % temp)
 
-# alternatives
-print(sense.temp)
-print(sense.temperature)
+t = sense.get_temperature()
+
+t = round(t, 1)
+
+print(t)
